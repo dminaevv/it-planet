@@ -1,0 +1,176 @@
+﻿@using FoodSharing.Models.Products
+@model ProductInfoView
+@{
+	ViewData["Title"] = "ProductInfo";
+}
+
+<style>
+	.table {
+		margin-bottom: 0rem;
+	}
+	.image-container1 {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-self: center;
+    align-items: center;
+	}
+	.icontext {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+	}
+	.icontext .text {
+    width: 100%;
+    line-height: 1.25;
+	}
+	.icontext p {
+    margin-bottom: 0;
+	}
+	.hover-effect:hover {
+	box-shadow: 0 2px 6px 0 rgb(206 206 238 / 54%);
+	transition: 0.5s;
+	}
+	.like::before{
+		cursor:pointer;
+		color:red;
+		content:"\F415";
+	}
+	.dislike::before{
+		cursor:pointer;
+		color:black;
+		content:"\F417";
+	}
+	.like:hover::before{
+		color:black;
+		content:"\F417";
+		transition: 0.7s;
+	}
+	.dislike:hover::before{
+		color:red;
+		content:"\F415";
+		transition: 0.7s;
+	}
+
+</style>
+
+<div class="container">
+	<div class="main-body">
+		<div class="row justify-content-center">
+
+			<div class="col-lg-8">
+				<div class="card">
+					<div style=" text-align: center;">
+						<img class="rounded img-fluid w-50 " style="align-items: center" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ProductView.Image))">
+					</div>
+					
+					<div class="card-body">
+						<div class="row">
+							<div style="padding-top: 15px;"  >
+								<h5 >Описание</h5>
+
+								<p> @Model.ProductView.Description </p>
+								<table class="table table-striped">
+									<tbody>
+										<tr>
+											<td width="200">
+												
+												<b class="text-dark"><i class="bi bi-basket-fill"></i> Категория</b>
+											</td>
+											<td> @Model.ProductView.CategoryName </td>
+										</tr>
+										<tr>
+											<td>
+												@*<i class="fa-fw me-2 text-muted fa fa-building">
+
+												</i>*@
+												<b class="text-dark"><i class="bi bi-123"></i> Количество</b>
+											</td>
+											<td> @Model.ProductView.Quantity</td>
+										</tr>
+										@*<tr>
+											<td>
+												<i class="fa-fw me-2 text-muted fa fa-ruler-combined">
+
+												</i>
+												<b class="text-dark">Area size</b>
+											</td>
+											<td> 120 sq.ft </td>
+										</tr>
+										<tr>
+											<td>
+												<i class="fa-fw me-2 text-muted fa fa-couch">
+
+												</i>
+												<b class="text-dark">Furniture</b>
+											</td>
+											<td> Sofa, armchairs </td>
+										</tr>*@
+									</tbody>
+								</table>
+							</div>
+						</div> 
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-body">
+						<a class="float-end"  onclick="location.href='@Url.Action("ChangeProductFavourites", "Product", new { ProductId = Model.ProductView.Id })'">
+									@if (Model.UserEmail != Model.ProductView.Email)
+									{
+										@if (Model.ProductView.IsFavourite == false)
+                                    {
+                                        <i class="bi dislike"></i>
+                                    } else
+                                    {
+                                        <i class="bi like"></i>
+                                    }
+
+									}									
+								</a>
+						<time datetime="2022-02-14 20:00" class="text-muted"> @Model.ProductView.CreatedAt </time>
+						<b class="clearfix"></b>
+						@*<div class="price mt-2 h5"> $32,000 </div>*@
+						<h3>@Model.ProductView.Name </h3>
+						<hr>
+						<p>
+							<i class="fa fa-map-marker-alt text-muted">
+
+							</i> @Model.UserProfileViewModel.Adress
+						</p>
+						@*<article class="bg-gray overflow-hidden position-relative rounded" style="height: 130px">
+							<img src="bootstrap5-ecommerce/images/misc/map.jpg" class="img-fluid opacity">
+							<a href="#" class="center-xy btn btn-light">Show on map</a>
+						</article>*@
+						<br>
+						
+						<div class="card-body hover-effect" style="border: 1px solid rgba(81,88,94,.12); cursor: pointer; border-radius: 0.45rem;"  >
+							<div class="icontext mb-3 w-100 " onclick="location.href='@Url.Action("ProfileInfo", "Account", new { UserId = Model.UserProfileViewModel.UserId })'">
+								<img class="icon rounded-circle img-fluid me-2" width="50"src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.UserProfileViewModel.Avatar))">
+								<div class="text">
+									<h6 class="title">@($"{Model.UserProfileViewModel.FirstName} {Model.UserProfileViewModel.LastName}")</h6>
+									<p class="text-muted">Real estate broker </p>
+								</div>
+							</div>
+							<div>
+								<a href="#" class="btn w-100 btn-lg btn-success mb-2">
+									<i class="fa fa-phone me-2">
+
+									</i> Показать номер
+								</a>
+								<a href="#" class="btn w-100 btn-lg btn-warning" onclick="location.href='@Url.Action("ChatMessage", "Chat", new { UserId = Model.UserProfileViewModel.UserId })'">
+									<i class="fa fa-comment-dots me-2">
+
+									</i> Сообщение
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

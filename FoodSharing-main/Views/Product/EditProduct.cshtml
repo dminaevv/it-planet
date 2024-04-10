@@ -1,0 +1,86 @@
+﻿@using FoodSharing.Models.Products.ProductCategories
+@model ProductView
+@{
+    ViewData["Title"] = "EditProduct";
+}
+
+<script type="text/javascript">
+    var loadFile = function (event) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
+<div class="container">
+	<div class="main-body">
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				<div class="card">
+					@if (Model.Image != null)
+				{
+					<div class="image-container ">
+						<img  id="output" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Image))" 
+							class="img-fluid card-img-top mh-100 mw-100" />
+					</div>
+				}
+				else
+				{ 
+					<img id="output" src="https://e7.pngegg.com/pngimages/83/693/png-clipart-united-states-color-blank-map-white-united-states-angle-white.png" class="img-fluid rounded"/>
+				}
+					<div class="card-body">
+						<form method="post" asp asp-controller="Product" asp-action="EditProduct" enctype="multipart/form-data">
+							<input asp-for="Id" hidden>
+						@*	<input asp-for="IFormFile" type="file" class="form-control" hidden>*@
+
+							<div class="row mb-4">
+								<label asp-for="Name" class="col-sm-3 col-form-label"></label>
+								<div class="col-sm-9">
+									<input asp-for="Name" type="text" class="form-control" placeholder="Введите название товара">
+								</div>
+							</div>
+							<div class="row mb-4">
+								<label asp-for="Quantity" class="col-sm-3 col-form-label"></label>
+								<div class="col-sm-9">
+									<input asp-for="Quantity" type="text" class="form-control" placeholder="">
+								</div>
+							</div>
+							<div class="row mb-4">
+								<label asp-for="Description" class="col-sm-3 col-form-label"></label>
+								<div class="col-sm-9">
+									<textarea asp-for="Description" class="form-control">
+								</textarea>
+								</div>
+							</div>
+							<div class="row mb-4">
+								<div class="col-sm-3">
+									<label class="mb-0 h6">Фото</label>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input onchange="loadFile(event)" asp-for="IFormFile" class="form-control" type="file">
+								</div>
+							</div>
+							<div class="row mb-4">
+								<label asp-for="CategoryName" class="col-sm-3 col-form-label"></label>
+								<div class="col-sm-9">
+									<select asp-for="CategoryId"
+											asp-items="@(new SelectList(Model.ProductCategories, nameof(ProductCategory.Id), nameof(ProductCategory.Name)))"
+											class="form-select">
+										<option selected>Выберите категорию продукта</option>
+									</select>
+								</div>
+							</div>
+							<div class="row mb-2 px-2">
+								<button class="btn btn-success">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
